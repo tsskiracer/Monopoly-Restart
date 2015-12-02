@@ -5,7 +5,7 @@ public abstract class Player
 		private String name;
 		private String token;
 		private int money;
-		static ArrayList<Player> players = new ArrayList<Player>();
+		protected static ArrayList<Player> players = new ArrayList<Player>();
 		public Player(String n, String t, int m)
 		{
 			name=n;
