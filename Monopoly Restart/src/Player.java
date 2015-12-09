@@ -5,7 +5,7 @@ public abstract class Player
 		private String name;
 		private String token;
 		private int money;
-		protected static ArrayList<Player> players = new ArrayList<Player>();
+		protected static ArrayList<Player> user = new ArrayList<Player>();
 		public Player(String n, String t, int m)
 		{
 			name=n;
@@ -38,7 +38,7 @@ public abstract class Player
 			}
 		public static void fillList()
 		{
-			players.add(new Player("Trip", "Race Car", 1500));
+			user.add(new Player("Trip", "Race Car", 1500));
 		}
 		
 		

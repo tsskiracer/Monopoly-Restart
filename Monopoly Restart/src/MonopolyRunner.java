@@ -8,16 +8,21 @@ public class MonopolyRunner
 		static int counter = 0;
 		static int x = 1;
 		static ArrayList<Property> inventory = new ArrayList<Property>();
+		static ArrayList<Board> inventory2 = new ArrayList<Board>();
 		public static void main(String[] args)
 			{
-				Property.fillList();
+				
 				
 				
 				Scanner userInput = new Scanner(System.in);
 				System.out.println("Hello and welcome to single player Monopoly where you cannot lose.");
 				System.out.println("Would you like to continue? Type 'y' for yes and 'n' for no.");
 				String endGame = userInput.next();
-
+				System.out.println("Type '1' for star wars monopoly and 2 for regular.");
+				int type=userInput.nextInt();
+				if (type==1)
+				{
+					Property.fillList();
 				do
 					{
 						System.out.println("User is on " + Property.position.get(location).getName());
@@ -148,7 +153,7 @@ public class MonopolyRunner
 
 						System.out.println("You have $" + bankAccount + " in your bank account.");
 						System.out.print("You own ");
-						if (x > 0)
+						if (x > 1)
 							{
 								for (int i = 0; i < inventory.size(); i++)
 									{
@@ -156,7 +161,7 @@ public class MonopolyRunner
 									}
 							} else
 							{
-								System.out.println("nothing.");
+								System.out.print("nothing");
 							}
 						System.out.println(".");
 						counter++;
@@ -164,5 +169,161 @@ public class MonopolyRunner
 						System.out.println();
 						
 					} while (endGame.equalsIgnoreCase("y"));
+				}
+				else if(type==2)
+				{
+					Board.fillList();
+					do
+					{
+						System.out.println("User is on " + Board.position.get(location).getName());
+						int diceRoll1 = ((int) ((Math.random() * 6) + 1));
+						int diceRoll2 = ((int) ((Math.random() * 6) + 1));
+						int diceRoll = diceRoll1 + diceRoll2;
+						System.out.println("Hit 'r' to roll the dice.");
+						String roll = userInput.next();
+						
+						if ((location + diceRoll) > 39)
+							{
+								location = location + diceRoll - 40;
+								System.out.println("You have passed go and recieved $200.");
+								bankAccount+=200;
+							}
+
+						else
+							{
+								location += diceRoll;
+							}
+						if (roll.equalsIgnoreCase("R"))
+							{
+								System.out.println("You rolled a " + diceRoll1 + " and a " + diceRoll2 + ". You landed on " +  Board.position.get(location).getName() + ".");
+								if ( Board.position.get(location).getName().equals("Community Chest"))
+									{
+										int chanceAmt = (int) ((Math.random() * 750) + 100);
+										bankAccount += chanceAmt;
+										System.out.println("You have landed on Community Chest and recieved $" + chanceAmt + " for your good deeds.");
+
+									}
+								else if (Board.position.get(location).getName().equals("Income Tax") || Board.position.get(location).getName().equals("Bounty"))
+									{
+										System.out.println("You have landed on " + Board.position.get(location).getName() + " and must pay $200.");
+										bankAccount-=200;
+									}
+								else if ( Board.position.get(location).getName().equals("Chance"))
+									{
+										int ccAmt = (int) ((Math.random() * 750) + 100);
+										bankAccount += ccAmt;
+										System.out.println(
+												"You have landed on Chane and have recieved $" + ccAmt + " for winning the lottery.");
+
+									}
+								else if (Board.position.get(location).getName().equals("Free Space"))
+									{
+										System.out.println("You have landed on Free Space. $400 has been added to your account.");
+										bankAccount+=400;
+									}
+								else if(Board.position.get(location).getName().equals("Just Visiting"))
+									{
+										System.out.println("Say hello to Fred for me");
+									}
+								else if ( Board.position.get(location).getName().equals("Go") && counter > 0)
+									{
+										System.out.println("You landed directly on go and have recieved $400");
+										bankAccount += 400;
+									}
+								else if (location == 30)
+
+									{
+
+										location = 10;
+										System.out.println();
+										System.out.println("You are in Jail.");
+
+										do
+
+											{
+												System.out.println("Type 'r' when you are ready to roll.");
+												String jRoll = userInput.next();
+												if (jRoll.equalsIgnoreCase("r"))
+													{
+
+														int diceRollJ1 = ((int) ((Math.random() * 6) + 1));
+
+														int diceRollJ2 = ((int) ((Math.random() * 6) + 1));
+
+														System.out.println("You rolled a " + diceRollJ1 + " and a "
+																+ diceRollJ2 + ".");
+
+														if (diceRollJ1 == diceRollJ2)
+
+															{
+
+																location = diceRollJ1 + diceRollJ2 + 10;
+
+																System.out.println("You got out of jail and moved " + (location - 10) + " places to " +  Property.position.get(location).getName() + ".");
+
+															}
+
+														else
+
+															{
+
+																System.out.println("Sorry, you cannot leave yet.");
+
+															}
+														if (turns == 2)
+															{
+																location = diceRollJ1 + diceRollJ2 + 10;
+																System.out.println("You must pay $50 to get out.");
+																System.out.println("When you pay, you will move " + (location - 10) + " places which puts you on " +  Property.position.get(location).getName() + ".");
+																bankAccount-= 50;
+															}
+														turns++;
+													}
+
+											} while (location == 10 && turns < 3);
+									}
+
+								else
+									{
+										System.out.println("Would you like to buy the property? It costs $" + Board.position.get(location).getCost() + ". If yes, type 'y'. If not, type 'n'.");
+										String buy = userInput.next();
+										if (buy.equalsIgnoreCase("y"))
+											{
+												System.out.println("You have now purchased this property. It has been added to your inventory.");
+												inventory2.add(Board.position.get(location));
+												bankAccount -=  Board.position.get(location).getCost();
+												x++;
+											} else
+											{
+												System.out.println("You will have a chance to buy it if you land on it again.");
+											}
+									}
+								
+									}
+
+						System.out.println("You have $" + bankAccount + " in your bank account.");
+						System.out.print("You own ");
+						if (x > 1)
+							{
+								for (int i = 0; i < inventory2.size(); i++)
+									{
+										System.out.print(inventory2.get(i).getName() + ", ");
+									}
+							} 
+						else
+							{
+								System.out.print("nothing");
+							}
+						System.out.println(".");
+						counter++;
+						System.out.println();
+						System.out.println();
+						
+					} while (endGame.equalsIgnoreCase("y"));
+				}
+				else
+				{
+					System.out.println("Please restart");
+				}
 			}
 	}
