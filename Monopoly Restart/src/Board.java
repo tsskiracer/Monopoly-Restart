@@ -40,7 +40,7 @@ public class Board {
 		position.add(new Board("Go", 200, 0));
 		position.add(new Board("Mediteranean Avenue", 60, 0));
 		position.add(new Board("Community Chest", 0, 0));
-		position.add(new Board("Baltic Avenue", 60, 0));
+		position.add(new Board("Baltic Avenue", 60, 0)) ;
 		position.add(new Board("Income Tax", -200, 0));
 		position.add(new Board("Reading Railroad", 200, 0));
 		position.add(new Board("Oriental Avenue", 100, 0));
